@@ -1,0 +1,43 @@
+import 'dotenv/config';
+import { PrismaClient } from '../src/generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({
+    connectionString: process.env.DATABASE_URL as string,
+  }),
+});
+
+async function main() {
+  await prisma.priority.createMany({
+    data: [
+      { label: 'Critique', level: 4, color: '#E24B4A', icon: 'flame',      xpMultiplier: 2.00 },
+      { label: 'Haute',    level: 3, color: '#EF9F27', icon: 'arrow-up',   xpMultiplier: 1.50 },
+      { label: 'Normale',  level: 2, color: '#378ADD', icon: 'minus',      xpMultiplier: 1.00 },
+      { label: 'Faible',   level: 1, color: '#1D9E75', icon: 'arrow-down', xpMultiplier: 0.75 },
+    ],
+    skipDuplicates: true,
+  });
+  console.log('✅ Priorities seeded');
+
+  await prisma.achievement.createMany({
+    data: [
+      { name: 'Premier pas',        description: 'Complète ta première tâche',    icon: 'star',     xpBonus: 10,  conditionType: 'TASKS_COMPLETED', conditionValue: 1   },
+      { name: 'En route',           description: '10 tâches complétées',          icon: 'rocket',   xpBonus: 25,  conditionType: 'TASKS_COMPLETED', conditionValue: 10  },
+      { name: 'Productif',          description: '50 tâches complétées',          icon: 'zap',      xpBonus: 75,  conditionType: 'TASKS_COMPLETED', conditionValue: 50  },
+      { name: 'Machine',            description: '100 tâches complétées',         icon: 'cpu',      xpBonus: 150, conditionType: 'TASKS_COMPLETED', conditionValue: 100 },
+      { name: 'Première flamme',    description: 'Streak de 3 jours',             icon: 'flame',    xpBonus: 15,  conditionType: 'STREAK',          conditionValue: 3   },
+      { name: 'En feu',             description: 'Streak de 7 jours',             icon: 'fire',     xpBonus: 50,  conditionType: 'STREAK',          conditionValue: 7   },
+      { name: 'Inarrêtable',        description: 'Streak de 30 jours',            icon: 'trophy',   xpBonus: 200, conditionType: 'STREAK',          conditionValue: 30  },
+      { name: 'Montée en puissance',description: 'Atteindre le niveau 5',         icon: 'trending', xpBonus: 100, conditionType: 'LEVEL_REACHED',   conditionValue: 5   },
+      { name: 'Élite',              description: 'Atteindre le niveau 10',        icon: 'crown',    xpBonus: 500, conditionType: 'LEVEL_REACHED',   conditionValue: 10  },
+      { name: "Gagneur d'XP",       description: 'Accumuler 500 XP',              icon: 'coins',    xpBonus: 50,  conditionType: 'XP_EARNED',       conditionValue: 500 },
+    ],
+    skipDuplicates: true,
+  });
+  console.log('✅ Achievements seeded');
+}
+
+main()
+  .catch(e => { console.error(e); process.exit(1); })
+  .finally(() => prisma.$disconnect());

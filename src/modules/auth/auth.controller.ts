@@ -59,7 +59,11 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('refresh_token');
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure:   true,
+      sameSite: 'none',
+    });
     return { message: 'Logged out' };
   }
 }

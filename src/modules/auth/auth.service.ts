@@ -49,7 +49,7 @@ export class AuthService {
     );
 
     if (!user || !passwordMatch) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Email ou mot de passe incorrect');
     }
 
     return {

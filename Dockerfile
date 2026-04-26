@@ -6,8 +6,10 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
+
+# Génère le client Prisma avant le build TypeScript
 RUN npx prisma generate
+RUN npm run build
 
 EXPOSE 3000
 

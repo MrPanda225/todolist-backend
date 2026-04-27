@@ -7,6 +7,7 @@ import { TimeBlocksModule } from './modules/time-blocks/time-blocks.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { GamificationModule } from './modules/gamification/gamification.module';
+import { PrioritiesModule } from './modules/priorities/priorities.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
@@ -24,6 +25,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     CategoriesModule,
     TagsModule,
     GamificationModule,
+    PrioritiesModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

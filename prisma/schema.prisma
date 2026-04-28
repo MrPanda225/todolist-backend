@@ -44,7 +44,6 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  categories       Category[]
   tags             Tag[]
   tasks            Task[]
   timeBlocks       TimeBlock[]
@@ -69,13 +68,11 @@ model Priority {
 
 model Category {
   id        String   @id @default(uuid())
-  userId    String
   name      String
   color     String
   icon      String?
   createdAt DateTime @default(now())
 
-  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks Task[]
 
   @@map("categories")

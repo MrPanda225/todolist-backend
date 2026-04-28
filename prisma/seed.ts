@@ -118,37 +118,24 @@ async function seedAchievements() {
   console.log('✅ Achievements seedés');
 }
 
-async function seedCategoriesForAllUsers() {
-  const users = await prisma.user.findMany({ select: { id: true, username: true } });
+async function seedCategories() {
+  for (const cat of DEFAULT_CATEGORIES) {
+    const exists = await prisma.category.findFirst({
+      where: { name: cat.name },
+    });
 
-  if (users.length === 0) {
-    console.log("⚠️  Aucun user en base — crée un compte d'abord puis relance le seed");
-    return;
-  }
-
-  for (const user of users) {
-    let created = 0;
-
-    for (const cat of DEFAULT_CATEGORIES) {
-      const exists = await prisma.category.findFirst({
-        where: { userId: user.id, name: cat.name },
+    if (!exists) {
+      await prisma.category.create({
+        data: {
+          name:  cat.name,
+          color: cat.color,
+          icon:  cat.icon,
+        },
       });
-
-      if (!exists) {
-        await prisma.category.create({
-          data: {
-            userId: user.id,
-            name:   cat.name,
-            color:  cat.color,
-            icon:   cat.icon,
-          },
-        });
-        created++;
-      }
     }
-
-    console.log(`✅ ${user.username} — ${created} catégorie(s) créée(s)`);
   }
+
+  console.log('✅ Catégories seedées');
 }
 
 async function main() {
@@ -156,7 +143,7 @@ async function main() {
 
   await seedPriorities();
   await seedAchievements();
-  await seedCategoriesForAllUsers();
+  await seedCategories();
 
   console.log('\n🎉 Seed terminé avec succès');
 }

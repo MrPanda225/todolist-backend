@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import { env } from './config/env.config';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { SerializeInterceptor } from './common/interceptors/serialize.interceptor';
+import { SerializeDatesInterceptor }  from './common/interceptors/serialize-dates.interceptor';
+
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bodyParser: true });
@@ -15,6 +17,8 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalInterceptors(new SerializeInterceptor());
+
+  app.useGlobalInterceptors(new SerializeDatesInterceptor());
 
   app.enableCors({
     origin: env.NODE_ENV === 'production'

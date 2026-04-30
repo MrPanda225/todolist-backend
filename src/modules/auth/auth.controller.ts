@@ -42,6 +42,7 @@ export class AuthController {
       httpOnly: true,
       secure:   true,
       sameSite: 'none',
+      path:     '/',
       maxAge:   7 * 24 * 60 * 60 * 1000,
     });
 
@@ -56,6 +57,10 @@ export class AuthController {
     return this.authService.refresh(user);
   }
 
+  // @Public() est REQUIS : le token est déjà effacé côté client au moment
+  // où cette requête part — le JwtAuthGuard la rejetterait en 401 sinon,
+  // et le cookie ne serait jamais supprimé.
+  @Public()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response) {
@@ -63,6 +68,7 @@ export class AuthController {
       httpOnly: true,
       secure:   true,
       sameSite: 'none',
+      path:     '/',
     });
     return { message: 'Logged out' };
   }

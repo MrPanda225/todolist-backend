@@ -6,11 +6,11 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersRepository } from '../users/users.repository';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
-import { appConfig } from '../../config/app.config';
-import { JwtPayload } from '../../common/decorators/current-user.decorator';
-import { User } from '../../generated/prisma';
+import { RegisterDto }     from './dto/register.dto';
+import { LoginDto }        from './dto/login.dto';
+import { appConfig }       from '../../config/app.config';
+import { JwtPayload }      from '../../common/decorators/current-user.decorator';
+import { User }            from '../../generated/prisma';
 
 @Injectable()
 export class AuthService {
@@ -28,12 +28,11 @@ export class AuthService {
     }
 
     const passwordHash = await bcrypt.hash(dto.password, appConfig.bcrypt.saltRounds);
-
     const user = await this.usersRepository.create({
-      username:     dto.username,
-      email:        dto.email,
-      firstName:    dto.firstName,
-      lastName:     dto.lastName,
+      username:  dto.username,
+      email:     dto.email,
+      firstName: dto.firstName,
+      lastName:  dto.lastName,
       passwordHash,
     });
 

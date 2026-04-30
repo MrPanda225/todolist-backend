@@ -9,6 +9,7 @@ import { TagsModule } from './modules/tags/tags.module';
 import { GamificationModule } from './modules/gamification/gamification.module';
 import { PrioritiesModule } from './modules/priorities/priorities.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     TagsModule,
     GamificationModule,
     PrioritiesModule,
+    UsersModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

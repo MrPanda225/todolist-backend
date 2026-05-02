@@ -2,11 +2,18 @@ import {
   Controller, Get, Post, Patch, Delete,
   Param, Body, HttpCode, HttpStatus,
 } from '@nestjs/common';
-import { TimeBlocksService } from './time-blocks.service';
-import { CreateTimeBlockSchema, CreateTimeBlockDto } from './dto/time-blocks.dto';
-import { UpdateTimeBlockSchema, UpdateTimeBlockDto } from './dto/time-blocks.dto';
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
-import { CurrentUser, JwtPayload } from '../../common/decorators/current-user.decorator';
+import { TimeBlocksService }       from './time-blocks.service';
+import {
+  CreateTimeBlockSchema,
+  UpdateTimeBlockSchema,
+} from './dto/time-blocks.dto';
+import type {
+  CreateTimeBlockDto,
+  UpdateTimeBlockDto,
+} from './dto/time-blocks.dto';
+import { ZodValidationPipe }       from '../../common/pipes/zod-validation.pipe';
+import { CurrentUser }             from '../../common/decorators/current-user.decorator';
+import type { JwtPayload }         from '../../common/decorators/current-user.decorator';
 
 @Controller('time-blocks')
 export class TimeBlocksController {

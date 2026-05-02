@@ -2,10 +2,16 @@ import {
   Controller, Get, Post, Patch, Delete,
   Param, Body, HttpCode, HttpStatus,
 } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
-import { CreateCategorySchema, CreateCategoryDto } from './dto/categories.dto';
-import { UpdateCategorySchema, UpdateCategoryDto } from './dto/categories.dto';
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
+import { CategoriesService }   from './categories.service';
+import {
+  CreateCategorySchema,
+  UpdateCategorySchema,
+} from './dto/categories.dto';
+import type {
+  CreateCategoryDto,
+  UpdateCategoryDto,
+} from './dto/categories.dto';
+import { ZodValidationPipe }   from '../../common/pipes/zod-validation.pipe';
 
 @Controller('categories')
 export class CategoriesController {

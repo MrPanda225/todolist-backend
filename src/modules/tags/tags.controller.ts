@@ -2,10 +2,12 @@ import {
   Controller, Get, Post, Delete,
   Param, Body, HttpCode, HttpStatus,
 } from '@nestjs/common';
-import { TagsService } from './tags.service';
-import { CreateTagSchema, CreateTagDto } from './dto/tags.dto';
+import { TagsService }       from './tags.service';
+import { CreateTagSchema }   from './dto/tags.dto';
+import type { CreateTagDto } from './dto/tags.dto';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
-import { CurrentUser, JwtPayload } from '../../common/decorators/current-user.decorator';
+import { CurrentUser }       from '../../common/decorators/current-user.decorator';
+import type { JwtPayload }   from '../../common/decorators/current-user.decorator';
 
 @Controller('tags')
 export class TagsController {

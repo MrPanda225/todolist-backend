@@ -1,13 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { GamificationService } from './gamification.service';
-import { AchievementsService } from './achievements.service';
-import { CurrentUser, JwtPayload } from '../../common/decorators/current-user.decorator';
+import { Controller, Get }      from '@nestjs/common';
+import { GamificationService }  from './gamification.service';
+import { AchievementsService }  from './achievements.service';
+import { CurrentUser }          from '../../common/decorators/current-user.decorator';
+import type { JwtPayload }      from '../../common/decorators/current-user.decorator';
 
 @Controller('gamification')
 export class GamificationController {
   constructor(
-    private readonly gamificationService:  GamificationService,
-    private readonly achievementsService:  AchievementsService,
+    private readonly gamificationService: GamificationService,
+    private readonly achievementsService: AchievementsService,
   ) {}
 
   @Get('stats')

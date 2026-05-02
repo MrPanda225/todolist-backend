@@ -8,14 +8,17 @@ import {
   UsePipes,
   UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
-import { AuthService } from './auth.service';
-import { RegisterSchema, RegisterDto } from './dto/register.dto';
-import { LoginSchema, LoginDto } from './dto/login.dto';
-import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
-import { Public } from '../../common/decorators/public.decorator';
-import { JwtRefreshGuard } from '../../common/guards/jwt-refresh.guard';
-import { CurrentUser, JwtPayload } from '../../common/decorators/current-user.decorator';
+import type { Response }      from 'express';
+import { AuthService }        from './auth.service';
+import { RegisterSchema }     from './dto/register.dto';
+import type { RegisterDto }   from './dto/register.dto';
+import { LoginSchema }        from './dto/login.dto';
+import type { LoginDto }      from './dto/login.dto';
+import { ZodValidationPipe }  from '../../common/pipes/zod-validation.pipe';
+import { Public }             from '../../common/decorators/public.decorator';
+import { JwtRefreshGuard }    from '../../common/guards/jwt-refresh.guard';
+import { CurrentUser }        from '../../common/decorators/current-user.decorator';
+import type { JwtPayload }    from '../../common/decorators/current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -57,9 +60,6 @@ export class AuthController {
     return this.authService.refresh(user);
   }
 
-  // @Public() est REQUIS : le token est déjà effacé côté client au moment
-  // où cette requête part — le JwtAuthGuard la rejetterait en 401 sinon,
-  // et le cookie ne serait jamais supprimé.
   @Public()
   @Post('logout')
   @HttpCode(HttpStatus.OK)

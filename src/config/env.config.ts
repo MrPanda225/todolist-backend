@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 const EnvSchema = z.object({
-  DATABASE_URL:           z.string().url(),
-  DIRECT_URL:             z.string().url(),
+  DATABASE_URL:           z.url(),
+  DIRECT_URL:             z.url(),
   JWT_ACCESS_SECRET:      z.string().min(32),
   JWT_REFRESH_SECRET:     z.string().min(32),
   JWT_ACCESS_EXPIRES_IN:  z.string().default('15m'),

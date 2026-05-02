@@ -16,7 +16,7 @@ import { User }            from '../../generated/prisma';
 export class AuthService {
   constructor(
     private readonly usersRepository: UsersRepository,
-    private readonly jwtService:      JwtService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(dto: RegisterDto): Promise<{ accessToken: string }> {
@@ -24,7 +24,7 @@ export class AuthService {
     const usernameTaken = await this.usersRepository.findByUsername(dto.username);
 
     if (emailTaken || usernameTaken) {
-      throw new ConflictException('Email or username already in use');
+      throw new ConflictException('Email or Username already in use');
     }
 
     const passwordHash = await bcrypt.hash(dto.password, appConfig.bcrypt.saltRounds);
@@ -42,14 +42,16 @@ export class AuthService {
   async login(dto: LoginDto): Promise<{ accessToken: string; refreshToken: string }> {
     const user = await this.usersRepository.findByEmail(dto.email);
 
-    const passwordMatch = await bcrypt.compare(
-      dto.password,
-      user?.passwordHash ?? '$2b$12$invalidhashtopreventtimingattack',
-    );
-
-    if (!user || !passwordMatch) {
+   
+    if (!user) {
       throw new UnauthorizedException('Email ou mot de passe incorrect');
     }
+
+
+    const passwordMatch = await bcrypt.compare(
+      dto.password,
+      user?.passwordHash,
+    );
 
     return {
       accessToken:  this.generateAccessToken(user),

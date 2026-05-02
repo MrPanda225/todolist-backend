@@ -22,12 +22,14 @@ export class CategoriesService {
   }
 
   async update(id: string, dto: UpdateCategoryDto): Promise<Category> {
-    await this.findOne(id);
-    return this.categoriesRepository.update(id, dto);
+    const category = await this.findOne(id);
+    if (!category) throw new NotFoundException('Category not found');
+    return this.categoriesRepository.update(category.id, dto);
   }
 
   async delete(id: string): Promise<void> {
-    await this.findOne(id);
-    return this.categoriesRepository.delete(id);
+   const category = await this.categoriesRepository.findOne(id);
+    if (!category) throw new NotFoundException('Category not found');
+    return this.categoriesRepository.delete(category.id);
   }
 }

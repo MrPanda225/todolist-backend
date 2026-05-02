@@ -6,7 +6,7 @@ const TimeBlockBaseSchema = z.object({
   endTime:          z.coerce.date(),
   color:            z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
   isRecurring:      z.boolean().default(false),
-  recurrenceRuleId: z.string().uuid().optional(),
+  recurrenceRuleId: z.uuid().optional(),
 });
 
 export const CreateTimeBlockSchema = TimeBlockBaseSchema.refine(

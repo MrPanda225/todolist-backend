@@ -10,16 +10,14 @@ function serializeDates(value: unknown): unknown {
 
   if (value instanceof Date) return value.toISOString();
 
-  // Objet Prisma Decimal {s, e, d}
+  // Prisma Decimal — détecté par le nom du constructeur (plus fiable que {s,e,d})
   if (
     typeof value === 'object' &&
     !Array.isArray(value) &&
-    's' in (value as any) &&
-    'e' in (value as any) &&
-    'd' in (value as any)
+    (value as any).constructor?.name === 'Decimal'
   ) {
-    const v = value as any;
-    return Number(`${v.s < 0 ? '-' : ''}${v.d.join('')}e${v.e - (v.d.length - 1)}`);
+    // .toString() retourne la représentation exacte : "1.5", "0.75", "2.00"
+    return parseFloat((value as any).toString());
   }
 
   if (Array.isArray(value)) return value.map(serializeDates);
@@ -27,8 +25,8 @@ function serializeDates(value: unknown): unknown {
   if (typeof value === 'object') {
     return Object.fromEntries(
       Object.entries(value as Record<string, unknown>).map(
-        ([k, v]) => [k, serializeDates(v)]
-      )
+        ([k, v]) => [k, serializeDates(v)],
+      ),
     );
   }
 

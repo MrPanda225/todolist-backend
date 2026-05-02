@@ -14,11 +14,15 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.use(cookieParser());
   app.setGlobalPrefix('api');
-  app.useGlobalFilters(new GlobalExceptionFilter());
-  app.useGlobalInterceptors(new SerializeInterceptor());
-  app.useGlobalInterceptors(new SerializeDatesInterceptor());
 
-  // Origines autorisées — séparées par virgule dans FRONTEND_URL
+  app.useGlobalFilters(new GlobalExceptionFilter());
+
+  // Un seul appel — deux appels séparés écrasent le premier dans NestJS
+  app.useGlobalInterceptors(
+    new SerializeInterceptor(),
+    new SerializeDatesInterceptor(),
+  );
+
   const allowedOrigins = (process.env.FRONTEND_URL ?? 'http://localhost:5173')
     .split(',')
     .map(o => o.trim())
